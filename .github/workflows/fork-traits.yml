@@ -1,0 +1,23 @@
+name: Fork trait checker tests
+
+on:
+  push:
+    branches: [fix/trait-checker-struct]
+
+permissions:
+  contents: read
+
+jobs:
+  traits-check:
+    if: github.repository == 'h55n/monad'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Test trait checker
+        run: python -m unittest discover -s scripts/tests -v
+      - name: Check instantiations
+        run: python scripts/check-trait-instantiations.py category
