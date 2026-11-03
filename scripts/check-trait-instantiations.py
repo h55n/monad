@@ -23,6 +23,7 @@ This script finds usages of all explicit trait instantiation macros:
 - EXPLICIT_EVM_TRAITS, EXPLICIT_MONAD_TRAITS, EXPLICIT_TRAITS (functions)
 - EXPLICIT_EVM_TRAITS_CLASS, EXPLICIT_MONAD_TRAITS_CLASS, EXPLICIT_TRAITS_CLASS (classes)
 - EXPLICIT_EVM_TRAITS_MEMBER, EXPLICIT_MONAD_TRAITS_MEMBER, EXPLICIT_TRAITS_MEMBER (members)
+- EXPLICIT_MONAD_TRAITS_STRUCT (structs)
 
 It checks for overlaps according to these rules:
 
@@ -124,7 +125,7 @@ def find_macro_usages(root_path: str) -> List[MacroUsage]:
     # This pattern ensures we don't match macro definitions by requiring the argument
     # to not be a single letter (which would indicate a macro parameter like 'f' or 'c')
     pattern = re.compile(
-        r"^\s*(EXPLICIT_EVM_TRAITS(?:_CLASS|_MEMBER)?|EXPLICIT_MONAD_TRAITS(?:_CLASS|_MEMBER)?|EXPLICIT_TRAITS(?:_CLASS|_MEMBER)?)\s*\(\s*([^)]+)\s*\)",
+        r"^\s*(EXPLICIT_EVM_TRAITS(?:_CLASS|_MEMBER)?|EXPLICIT_MONAD_TRAITS(?:_CLASS|_MEMBER|_STRUCT)?|EXPLICIT_TRAITS(?:_CLASS|_MEMBER)?)\s*\(\s*([^)]+)\s*\)",
         re.MULTILINE,
     )
 
@@ -217,6 +218,7 @@ def check_overlaps(
                 in (
                     "EXPLICIT_MONAD_TRAITS",
                     "EXPLICIT_MONAD_TRAITS_CLASS",
+                    "EXPLICIT_MONAD_TRAITS_STRUCT",
                     "EXPLICIT_MONAD_TRAITS_MEMBER",
                     "EXPLICIT_TRAITS",
                     "EXPLICIT_TRAITS_CLASS",
